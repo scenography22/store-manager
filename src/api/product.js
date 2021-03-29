@@ -18,5 +18,5 @@ export default {
   // GET http://localhost:8090/products                
   list: () => axios.get(`${process.env.VUE_APP_API_BASE}/products`),
   // DELETE http://localhost:8090/products/{id}
-  del: (id) => axios.delete(`${process.env.VUE_APP_API_BASE}/products/${id}`)
+  del: (id) => axios.delete(`${process.env.VUE_APP_API_BASE}/product/${id}`)
 }

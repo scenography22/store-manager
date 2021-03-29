@@ -297,31 +297,43 @@ export default {
         shortDescription: this.shortDescription,
         description: this.description,
       };
-      const result = await api.post(product);
+      if (
+        this.category &&
+        this.name &&
+        this.price &&
+        this.quantity &&
+        this.files &&
+        this.shortDescription &&
+        this.description
+      ) {
+        const result = await api.post(product);
+        if (result.status == 200) {
+          // 서버에서 응답받은 객체
+          const newProduct = result.data;
+          newProduct.files = []; // 파일목록 초기화
 
-      if (result.status == 200) {
-        // 서버에서 응답받은 객체
-        const newProduct = result.data;
-        newProduct.files = []; // 파일목록 초기화
+          // this.files > file-input과 바인딩 되어있음
+          // 파일객체 여러개가 저장되는 배열
+          if (this.files && this.files.length > 0) {
+            //파일 업로드를 하고
+            for (let file of this.files) {
+              const form = new FormData();
+              form.append("data", file);
+              const result = await api.uploadFile(newProduct.id, form);
+              console.log(result.status);
+              console.log(result.data);
 
-        // this.files > file-input과 바인딩 되어있음
-        // 파일객체 여러개가 저장되는 배열
-        if (this.files && this.files.length > 0) {
-          //파일 업로드를 하고
-          for (let file of this.files) {
-            const form = new FormData();
-            form.append("data", file);
-            const result = await api.uploadFile(newProduct.id, form);
-            console.log(result.status);
-            console.log(result.data);
-
-            newProduct.files.push({
-              ...result.data,
-            });
+              newProduct.files.push({
+                ...result.data,
+              });
+            }
           }
+          this.products.unshift(newProduct);
+          // alert("상품이 등록되었습니다.");
+          this.$router.push("/ProductList");
         }
-        this.products.unshift(newProduct);
-        this.$router.push("/ProductList");
+      } else {
+        alert("필수 항목을 모두 입력해주세요.");
       }
     },
   },

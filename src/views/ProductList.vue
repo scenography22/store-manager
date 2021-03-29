@@ -23,6 +23,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0"
+          @click="deleteProducts()"
         >
           선택삭제
         </v-btn>
@@ -33,6 +34,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0 white--text"
+          @click="goToProductRegister()"
         >
           상품등록</v-btn
         >
@@ -42,6 +44,9 @@
           <template v-slot:default>
             <thead>
               <tr>
+                <th class="text-center tb">
+                  <input type="checkbox" />
+                </th>
                 <th class="text-center">상품명</th>
                 <th class="text-center">상품코드</th>
                 <th class="text-center">판매가</th>
@@ -54,8 +59,28 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="product in products" :key="product.name">
-                <td>{{ product.name }}</td>
+              <tr v-for="(product, i) in products" :key="i">
+                <td class="tb">
+                  <input type="checkbox" />
+                </td>
+                <v-menu bottom right offset-x>
+                  <template v-slot:activator="{ on }">
+                    <td>
+                      <span v-on="on" style="text-decoration: underline">{{
+                        product.name
+                      }}</span>
+                    </td>
+                  </template>
+                  <v-list>
+                    <v-list-item
+                      ><v-btn @click="deleteProducts(product)"
+                        >Remove</v-btn
+                      ></v-list-item
+                    >
+                    <v-list-item><v-btn text>Edit</v-btn></v-list-item>
+                  </v-list>
+                </v-menu>
+
                 <td>{{ product.code }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.quantity }}</td>
@@ -83,13 +108,18 @@ th {
   border-right: 1px solid #cccccc;
   background-color: #f8f9fd;
 }
+input:checked {
+  background-color: pink;
+}
 </style>
 
 <script>
 import api from "../api/product";
 export default {
+  props: ["product", "index"],
   data: () => ({
     products: [],
+    chkAll: false,
   }),
   mounted() {
     // 목록조회 함수 호출
@@ -103,6 +133,22 @@ export default {
       console.log("------");
       if (result.status == 200) {
         this.products = result.data;
+      }
+    },
+    goToProductRegister() {
+      this.$router.push("/productregister");
+    },
+    async deleteProducts(product) {
+      console.log("product.id : " + product.id);
+      const result = await api.del(product.id);
+      console.log(result);
+      console.log(result.data);
+
+      // 서버에서 정상적으로 DB에 삭제를 했으면
+
+      if (result.status == 200) {
+        //화면에 바인딩된 배열에서 삭제
+        this.products.splice(product, 1);
       }
     },
   },
