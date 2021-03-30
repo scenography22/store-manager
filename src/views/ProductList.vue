@@ -39,6 +39,7 @@
           상품등록</v-btn
         >
       </v-col>
+
       <v-card outlined class="mx-3 mb-3 rounded-0 text-center">
         <v-simple-table>
           <template v-slot:default>
@@ -58,12 +59,19 @@
                 <th class="text-center">요약설명</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody style="height: 300px">
               <tr v-for="(product, i) in products" :key="i">
-                <td class="tb">
+                <td>
                   <input type="checkbox" />
                 </td>
-                <v-menu bottom right offset-x>
+
+                <v-menu
+                  top
+                  right
+                  offset-x
+                  :close-on-content-click="closeOnContentClick"
+                  min-width="1000px"
+                >
                   <template v-slot:activator="{ on }">
                     <td>
                       <span v-on="on" style="text-decoration: underline">{{
@@ -71,14 +79,84 @@
                       }}</span>
                     </td>
                   </template>
-                  <v-list>
-                    <v-list-item
-                      ><v-btn @click="deleteProducts(product)"
-                        >Remove</v-btn
-                      ></v-list-item
-                    >
-                    <v-list-item><v-btn text>Edit</v-btn></v-list-item>
-                  </v-list>
+                  <!-- 카테고리 -->
+                  <v-card>
+                    <v-card outlined class="mx-3 mb-3 rounded-0 text-center">
+                      <v-card-title class="font-weight-black">
+                        상품 상세
+                      </v-card-title>
+                      <v-divider></v-divider>
+                      <v-simple-table>
+                        <template>
+                          <thead>
+                            <tr>
+                              <th class="text-center">상품명</th>
+                              <th class="text-center">상품코드</th>
+                              <th class="text-center">판매가</th>
+                              <th class="text-center">재고수량</th>
+                              <th class="text-center">상품URL</th>
+                              <th class="text-center">카테고리</th>
+                              <th class="text-center">상품등록일</th>
+                              <th class="text-center">최종수정일</th>
+                              <th class="text-center">요약설명</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{{ product.name }}</td>
+
+                              <td>{{ product.code }}</td>
+                              <td>{{ product.price }}</td>
+                              <td>{{ product.quantity }}</td>
+                              <td>{{ product.url }}</td>
+                              <td>{{ product.category }}</td>
+                              <td>{{ product.createdTime }}</td>
+                              <td>{{ product.modifiedTime }}</td>
+                              <td style="width: 300px">
+                                {{ product.shortDescription }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </v-card>
+
+                    <!-- <v-footer fixed padless app>
+                      <v-card
+                        flat
+                        tile
+                        height="60px"
+                        width="100%"
+                        color="#ECEDEF"
+                        style="border-top: solid 1px #dddddd"
+                      >
+                        <v-col class="d-flex justify-space-between">
+                          <v-btn
+                            outlined
+                            depressed
+                            min-width="80"
+                            min-height="36"
+                            style="font-size: 14px; margin-top: 4px"
+                            class="pa-0 rounded-0"
+                            @click="deleteProducts()"
+                          >
+                            선택삭제
+                          </v-btn>
+                          <v-btn
+                            depressed
+                            color="#00C73C"
+                            min-width="80"
+                            min-height="36"
+                            style="font-size: 14px; margin-top: 4px"
+                            class="pa-0 rounded-0 white--text"
+                            @click="goToProductRegister()"
+                          >
+                            상품등록</v-btn
+                          >
+                        </v-col>
+                      </v-card>
+                    </v-footer> -->
+                  </v-card>
                 </v-menu>
 
                 <td>{{ product.code }}</td>
@@ -98,6 +176,12 @@
   </div>
 </template>
 <style>
+.vrow {
+  min-height: 136px;
+}
+.vcol {
+  margin-top: 36px;
+}
 .v-btn--outlined {
   border: thin solid #cccccc;
 }
@@ -116,10 +200,24 @@ input:checked {
 <script>
 import api from "../api/product";
 export default {
-  props: ["product", "index"],
   data: () => ({
+    categories: ["육류", "반찬", "야채/과일"],
+    category: "",
+    name: "",
+    code: "",
+    price: "",
+    quantity: "",
+    shortDescription: "",
+    description: "",
+    files: [],
     products: [],
-    chkAll: false,
+    rules: {
+      required: (value) => !!value || "필수 항목입니다.",
+      counter: (value) =>
+        (!!value && value.length <= 250) || "최대 250자까지 가능합니다.",
+      minimumPrice: (value) => value >= 10 || "최소 10원 이상 입력해주세요.",
+    },
+    closeOnContentClick: false,
   }),
   mounted() {
     // 목록조회 함수 호출
@@ -135,9 +233,6 @@ export default {
         this.products = result.data;
       }
     },
-    goToProductRegister() {
-      this.$router.push("/productregister");
-    },
     async deleteProducts(product) {
       console.log("product.id : " + product.id);
       const result = await api.del(product.id);
@@ -145,11 +240,13 @@ export default {
       console.log(result.data);
 
       // 서버에서 정상적으로 DB에 삭제를 했으면
-
       if (result.status == 200) {
         //화면에 바인딩된 배열에서 삭제
         this.products.splice(product, 1);
       }
+    },
+    goToProductRegister() {
+      this.$router.push("/productregister");
     },
   },
 };
