@@ -65,98 +65,22 @@
                   <input type="checkbox" />
                 </td>
 
-                <v-menu
-                  top
-                  right
-                  offset-x
-                  :close-on-content-click="closeOnContentClick"
-                  min-width="1000px"
-                >
+                <v-menu top right :close-on-content-click="closeOnContentClick">
                   <template v-slot:activator="{ on }">
                     <td>
-                      <span v-on="on" style="text-decoration: underline">{{
-                        product.name
-                      }}</span>
+                      <span
+                        v-on="on"
+                        style="text-decoration: underline"
+                        class="mtdetail"
+                        >{{ product.name }}</span
+                      >
                     </td>
                   </template>
-                  <!-- 카테고리 -->
-                  <v-card>
-                    <v-card outlined class="mx-3 mb-3 rounded-0 text-center">
-                      <v-card-title class="font-weight-black">
-                        상품 상세
-                      </v-card-title>
-                      <v-divider></v-divider>
-                      <v-simple-table>
-                        <template>
-                          <thead>
-                            <tr>
-                              <th class="text-center">상품명</th>
-                              <th class="text-center">상품코드</th>
-                              <th class="text-center">판매가</th>
-                              <th class="text-center">재고수량</th>
-                              <th class="text-center">상품URL</th>
-                              <th class="text-center">카테고리</th>
-                              <th class="text-center">상품등록일</th>
-                              <th class="text-center">최종수정일</th>
-                              <th class="text-center">요약설명</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>{{ product.name }}</td>
-
-                              <td>{{ product.code }}</td>
-                              <td>{{ product.price }}</td>
-                              <td>{{ product.quantity }}</td>
-                              <td>{{ product.url }}</td>
-                              <td>{{ product.category }}</td>
-                              <td>{{ product.createdTime }}</td>
-                              <td>{{ product.modifiedTime }}</td>
-                              <td style="width: 300px">
-                                {{ product.shortDescription }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </v-card>
-
-                    <!-- <v-footer fixed padless app>
-                      <v-card
-                        flat
-                        tile
-                        height="60px"
-                        width="100%"
-                        color="#ECEDEF"
-                        style="border-top: solid 1px #dddddd"
-                      >
-                        <v-col class="d-flex justify-space-between">
-                          <v-btn
-                            outlined
-                            depressed
-                            min-width="80"
-                            min-height="36"
-                            style="font-size: 14px; margin-top: 4px"
-                            class="pa-0 rounded-0"
-                            @click="deleteProducts()"
-                          >
-                            선택삭제
-                          </v-btn>
-                          <v-btn
-                            depressed
-                            color="#00C73C"
-                            min-width="80"
-                            min-height="36"
-                            style="font-size: 14px; margin-top: 4px"
-                            class="pa-0 rounded-0 white--text"
-                            @click="goToProductRegister()"
-                          >
-                            상품등록</v-btn
-                          >
-                        </v-col>
-                      </v-card>
-                    </v-footer> -->
-                  </v-card>
+                  <product-detail
+                    :product="product"
+                    :products="products"
+                    @del="deleteProducts"
+                  ></product-detail>
                 </v-menu>
 
                 <td>{{ product.code }}</td>
@@ -176,6 +100,9 @@
   </div>
 </template>
 <style>
+img {
+  width: 100%;
+}
 .vrow {
   min-height: 136px;
 }
@@ -195,11 +122,19 @@ th {
 input:checked {
   background-color: pink;
 }
+.mtdetail:hover {
+  color: #00c73c;
+  cursor: pointer;
+}
 </style>
 
 <script>
+import ProductDetail from "../components/ProductDetail.vue";
 import api from "../api/product";
 export default {
+  components: {
+    ProductDetail,
+  },
   data: () => ({
     categories: ["육류", "반찬", "야채/과일"],
     category: "",
@@ -209,7 +144,7 @@ export default {
     quantity: "",
     shortDescription: "",
     description: "",
-    files: [],
+    images: [],
     products: [],
     rules: {
       required: (value) => !!value || "필수 항목입니다.",

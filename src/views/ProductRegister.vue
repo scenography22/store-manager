@@ -150,7 +150,7 @@
         </v-col>
         <v-col cols="9" class="vcol">
           <v-file-input
-            v-model="files"
+            v-model="images"
             :rules="[rules.required]"
             label=""
             prepend-inner-icon="mdi-image-plus"
@@ -245,6 +245,7 @@
             min-width="120"
             min-height="50"
             style="font-size: 16px; margin-top: 4px"
+            @click="goToProductList()"
           >
             취소
           </v-btn>
@@ -275,7 +276,7 @@ export default {
     quantity: "",
     shortDescription: "",
     description: "",
-    files: [],
+    images: [],
     products: [],
     rules: {
       required: (value) => !!value || "필수 항목입니다.",
@@ -302,7 +303,7 @@ export default {
         this.name &&
         this.price &&
         this.quantity &&
-        this.files &&
+        this.images &&
         this.shortDescription &&
         this.description
       ) {
@@ -310,20 +311,20 @@ export default {
         if (result.status == 200) {
           // 서버에서 응답받은 객체
           const newProduct = result.data;
-          newProduct.files = []; // 파일목록 초기화
+          newProduct.images = []; // 파일목록 초기화
 
-          // this.files > file-input과 바인딩 되어있음
+          // this.images > image-input과 바인딩 되어있음
           // 파일객체 여러개가 저장되는 배열
-          if (this.files && this.files.length > 0) {
+          if (this.images && this.images.length > 0) {
             //파일 업로드를 하고
-            for (let file of this.files) {
+            for (let image of this.images) {
               const form = new FormData();
-              form.append("data", file);
+              form.append("data", image);
               const result = await api.uploadFile(newProduct.id, form);
               console.log(result.status);
               console.log(result.data);
 
-              newProduct.files.push({
+              newProduct.images.push({
                 ...result.data,
               });
             }
@@ -335,6 +336,9 @@ export default {
       } else {
         alert("필수 항목을 모두 입력해주세요.");
       }
+    },
+    goToProductList() {
+      this.$router.push("/ProductList");
     },
   },
 };
