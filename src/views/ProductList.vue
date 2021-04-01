@@ -23,7 +23,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0"
-          @click="deleteProducts()"
+          @click="deleteProduct()"
         >
           선택삭제
         </v-btn>
@@ -46,7 +46,7 @@
             <thead>
               <tr>
                 <th class="text-center tb">
-                  <input type="checkbox" />
+                  <input type="checkbox" v-model="selectAll" @click="select" />
                 </th>
                 <th class="text-center">상품명</th>
                 <th class="text-center">상품코드</th>
@@ -62,7 +62,7 @@
             <tbody style="height: 300px">
               <tr v-for="(product, i) in products" :key="i">
                 <td>
-                  <input type="checkbox" />
+                  <input type="checkbox" :value="product.id" v-model="check" />
                 </td>
 
                 <v-menu top right :close-on-content-click="closeOnContentClick">
@@ -79,7 +79,8 @@
                   <product-detail
                     :product="product"
                     :products="products"
-                    @del="deleteProducts"
+                    @del="deleteProduct"
+                    @patch="modifyProduct"
                   ></product-detail>
                 </v-menu>
 
@@ -153,6 +154,8 @@ export default {
       minimumPrice: (value) => value >= 10 || "최소 10원 이상 입력해주세요.",
     },
     closeOnContentClick: false,
+    check: [],
+    selectAll: false,
   }),
   mounted() {
     // 목록조회 함수 호출
@@ -168,7 +171,7 @@ export default {
         this.products = result.data;
       }
     },
-    async deleteProducts(product) {
+    async deleteProduct(product) {
       console.log("product.id : " + product.id);
       const result = await api.del(product.id);
       console.log(result);
@@ -180,8 +183,26 @@ export default {
         this.products.splice(product, 1);
       }
     },
+    async modifyProduct(product) {
+      console.log("product.id : " + product.id);
+      const result = await api.patch(product.id);
+      console.log(result);
+      console.log(result.data);
+
+      if (result.status == 200) {
+        this.products = result.data;
+      }
+    },
     goToProductRegister() {
       this.$router.push("/productregister");
+    },
+    select() {
+      this.check = [];
+      if (!this.selectAll) {
+        for (let i in this.products) {
+          this.check.push(this.products[i].id);
+        }
+      }
     },
   },
 };

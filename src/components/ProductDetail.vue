@@ -185,6 +185,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0 white--text my-0"
+          @click="patch(product)"
         >
           상품수정</v-btn
         >
@@ -222,6 +223,9 @@ export default {
       // <feed-item @del="delFeed">
       // this.$emit("del", this.index);
       this.$emit("del", this.product);
+    },
+    patch() {
+      this.$emit("patch", this.product);
     },
   },
 };
