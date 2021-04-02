@@ -22,10 +22,10 @@
                   v-if="product.images.length > 0"
                   :src="product.images[0].dataUrl"
                 />
-                <v-img
+                <img
                   v-if="product.images.length == 0"
                   src="https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png"
-                ></v-img>
+                />
                 <v-file-input
                   v-model="product.images"
                   label=""
@@ -185,7 +185,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0 white--text my-0"
-          @click="patch(product)"
+          @click="put(product)"
         >
           상품수정</v-btn
         >
@@ -197,6 +197,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0 ml-3 my-0"
+          @click="cancel()"
         >
           취소
         </v-btn>
@@ -224,9 +225,10 @@ export default {
       // this.$emit("del", this.index);
       this.$emit("del", this.product);
     },
-    patch() {
-      this.$emit("patch", this.product);
+    put() {
+      this.$emit("put", this.product);
     },
+    cancel() {},
   },
 };
 </script>

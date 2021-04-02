@@ -42,11 +42,11 @@
 
       <v-card outlined class="mx-3 mb-3 rounded-0 text-center">
         <v-simple-table>
-          <template v-slot:default>
+          <template>
             <thead>
               <tr>
                 <th class="text-center tb">
-                  <input type="checkbox" v-model="selectAll" @click="select" />
+                  <!-- <input type="checkbox" /> -->
                 </th>
                 <th class="text-center">상품명</th>
                 <th class="text-center">상품코드</th>
@@ -62,7 +62,7 @@
             <tbody style="height: 300px">
               <tr v-for="(product, i) in products" :key="i">
                 <td>
-                  <input type="checkbox" :value="product.id" v-model="check" />
+                  <input type="checkbox" />
                 </td>
 
                 <v-menu top right :close-on-content-click="closeOnContentClick">
@@ -80,7 +80,7 @@
                     :product="product"
                     :products="products"
                     @del="deleteProduct"
-                    @patch="modifyProduct"
+                    @put="modifyProduct"
                   ></product-detail>
                 </v-menu>
 
@@ -154,8 +154,6 @@ export default {
       minimumPrice: (value) => value >= 10 || "최소 10원 이상 입력해주세요.",
     },
     closeOnContentClick: false,
-    check: [],
-    selectAll: false,
   }),
   mounted() {
     // 목록조회 함수 호출
@@ -181,28 +179,27 @@ export default {
       if (result.status == 200) {
         //화면에 바인딩된 배열에서 삭제
         this.products.splice(product, 1);
+        this.$router.go(0);
       }
     },
     async modifyProduct(product) {
       console.log("product.id : " + product.id);
-      const result = await api.patch(product.id);
+      const result = await api.put(
+        product.id,
+        product.name,
+        product.code,
+        product.category
+      );
       console.log(result);
       console.log(result.data);
 
       if (result.status == 200) {
         this.products = result.data;
+        // this.$router.go(0);
       }
     },
     goToProductRegister() {
       this.$router.push("/productregister");
-    },
-    select() {
-      this.check = [];
-      if (!this.selectAll) {
-        for (let i in this.products) {
-          this.check.push(this.products[i].id);
-        }
-      }
     },
   },
 };

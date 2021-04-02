@@ -20,5 +20,5 @@ export default {
   // DELETE http://localhost:8090/products/{id}
   del: (id) => axios.delete(`${process.env.VUE_APP_API_BASE}/products/${id}`),
   // PUT http://localhost:8090/products/{id}
-  patch: (id) => axios.patch(`${process.env.VUE_APP_API_BASE}/products/${id}`)
+  put: (id, name, code, category) => axios.put(`${process.env.VUE_APP_API_BASE}/products/${id}?name=${name}&code=${code}&category=${category}`)
 }

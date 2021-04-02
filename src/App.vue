@@ -6,14 +6,13 @@
       </div>
 
       <v-spacer></v-spacer>
-
       <v-btn
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
         target="_blank"
         text
       >
-        <span class="mr-2">쇼핑몰 바로가기</span>
         <v-icon>mdi-store</v-icon>
+        <span class="ml-2"> 쇼핑몰 바로가기</span>
       </v-btn>
     </v-app-bar>
 
