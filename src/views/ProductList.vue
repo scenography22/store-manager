@@ -6,11 +6,12 @@
         <v-icon style="color: grey">mdi-help-circle-outline</v-icon>
       </v-card-title>
     </v-card>
-    <v-card outlined class="mb-3 rounded-0">
+    <!-- <v-card outlined class="mb-3 rounded-0">
       <v-card-title class="font-weight-black">
         <span>-- 검색창 --</span>
       </v-card-title>
-    </v-card>
+    </v-card> -->
+    <search-product> </search-product>
     <!-- 상품 목록 -->
     <v-card outlined class="rounded-0">
       <v-card-title class="font-weight-black"> 상품 목록 </v-card-title>
@@ -52,7 +53,6 @@
                 <th class="text-center">상품코드</th>
                 <th class="text-center">판매가</th>
                 <th class="text-center">재고수량</th>
-                <th class="text-center">상품URL</th>
                 <th class="text-center">카테고리</th>
                 <th class="text-center">상품등록일</th>
                 <th class="text-center">최종수정일</th>
@@ -83,11 +83,9 @@
                     @put="modifyProduct"
                   ></product-detail>
                 </v-menu>
-
                 <td>{{ product.code }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.quantity }}</td>
-                <td>{{ product.url }}</td>
                 <td>{{ product.category }}</td>
                 <td>{{ product.createdTime }}</td>
                 <td>{{ product.modifiedTime }}</td>
@@ -130,11 +128,13 @@ input:checked {
 </style>
 
 <script>
+import SearchProduct from "../components/SearchProduct.vue";
 import ProductDetail from "../components/ProductDetail.vue";
 import api from "../api/product";
 export default {
   components: {
     ProductDetail,
+    SearchProduct,
   },
   data: () => ({
     categories: ["육류", "반찬", "야채/과일"],
@@ -186,16 +186,20 @@ export default {
       console.log("product.id : " + product.id);
       const result = await api.put(
         product.id,
-        product.name,
         product.code,
-        product.category
+        product.category,
+        product.name,
+        product.price,
+        product.quantity,
+        product.shortDescription,
+        product.description
       );
       console.log(result);
       console.log(result.data);
 
       if (result.status == 200) {
         this.products = result.data;
-        // this.$router.go(0);
+        this.$router.go(0);
       }
     },
     goToProductRegister() {
