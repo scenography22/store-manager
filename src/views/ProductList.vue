@@ -54,9 +54,9 @@
                 <th class="text-center">판매가</th>
                 <th class="text-center">재고수량</th>
                 <th class="text-center">카테고리</th>
+                <th class="text-center">요약설명</th>
                 <th class="text-center">상품등록일</th>
                 <th class="text-center">최종수정일</th>
-                <th class="text-center">요약설명</th>
               </tr>
             </thead>
             <tbody style="height: 300px">
@@ -78,7 +78,6 @@
                   </template>
                   <product-detail
                     :product="product"
-                    :products="products"
                     @del="deleteProduct"
                     @put="modifyProduct"
                   ></product-detail>
@@ -87,9 +86,9 @@
                 <td>{{ product.price }}</td>
                 <td>{{ product.quantity }}</td>
                 <td>{{ product.category }}</td>
+                <td style="width: 300px">{{ product.shortDescription }}</td>
                 <td>{{ product.createdTime }}</td>
                 <td>{{ product.modifiedTime }}</td>
-                <td style="width: 300px">{{ product.shortDescription }}</td>
               </tr>
             </tbody>
           </template>
@@ -165,6 +164,7 @@ export default {
       console.log(result);
       console.log(result.data);
       console.log("------");
+      console.log(this.images);
       if (result.status == 200) {
         this.products = result.data;
       }

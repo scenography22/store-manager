@@ -28,7 +28,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <!-- <v-divider inset></v-divider> -->
+    <v-divider inset></v-divider>
     <v-row>
       <v-col cols="1" class="my-auto">
         <v-subheader>카테고리</v-subheader>
@@ -42,9 +42,10 @@
           single-line
           style="width: 200px"
           class="rounded-0"
+          label="카테고리 선택"
         ></v-select>
       </v-col>
-      <v-divider vertical inset></v-divider>
+      <!-- <v-divider vertical inset></v-divider> -->
       <v-col cols="1" class="my-auto">
         <v-subheader>상품등록일</v-subheader>
       </v-col>
@@ -60,6 +61,7 @@
         </v-btn-toggle>
       </v-col>
     </v-row>
+    <v-divider></v-divider>
     <v-col class="d-flex justify-center">
       <v-btn
         depressed
@@ -84,6 +86,12 @@
     </v-col>
   </v-card>
 </template>
+
+<style>
+.v-divide--inset.v-divider--vertical {
+  margin-bottom: 15px;
+}
+</style>
 <script>
 export default {
   name: "search-product",
