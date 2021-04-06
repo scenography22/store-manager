@@ -24,7 +24,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0"
-          @click="deleteProduct()"
+          @click="deleteProducts()"
         >
           선택삭제
         </v-btn>
@@ -47,22 +47,26 @@
             <thead>
               <tr>
                 <th class="text-center tb">
-                  <!-- <input type="checkbox" /> -->
+                  <input type="checkbox" v-model="selectAll" />
                 </th>
-                <th class="text-center">상품명</th>
-                <th class="text-center">상품코드</th>
-                <th class="text-center">판매가</th>
-                <th class="text-center">재고수량</th>
-                <th class="text-center">카테고리</th>
-                <th class="text-center">요약설명</th>
-                <th class="text-center">상품등록일</th>
-                <th class="text-center">최종수정일</th>
+                <th class="text-center" style="font-size: 14px">상품명</th>
+                <th class="text-center" style="font-size: 14px">상품코드</th>
+                <th class="text-center" style="font-size: 14px">판매가</th>
+                <th class="text-center" style="font-size: 14px">재고수량</th>
+                <th class="text-center" style="font-size: 14px">카테고리</th>
+                <th class="text-center" style="font-size: 14px">요약설명</th>
+                <th class="text-center" style="font-size: 14px">상품등록일</th>
+                <th class="text-center" style="font-size: 14px">최종수정일</th>
               </tr>
             </thead>
             <tbody style="height: 300px">
               <tr v-for="(product, i) in products" :key="i">
                 <td>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    v-model="selected"
+                    :value="product.id"
+                  />
                 </td>
 
                 <v-menu top right :close-on-content-click="closeOnContentClick">
@@ -117,8 +121,8 @@ th {
   border-right: 1px solid #cccccc;
   background-color: #f8f9fd;
 }
-input:checked {
-  background-color: pink;
+input {
+  margin-top: 7px;
 }
 .mtdetail:hover {
   color: #00c73c;
@@ -146,6 +150,8 @@ export default {
     description: "",
     images: [],
     products: [],
+    product: [],
+    id: "",
     rules: {
       required: (value) => !!value || "필수 항목입니다.",
       counter: (value) =>
@@ -153,20 +159,59 @@ export default {
       minimumPrice: (value) => value >= 10 || "최소 10원 이상 입력해주세요.",
     },
     closeOnContentClick: false,
+    selected: [],
   }),
+  computed: {
+    selectAll: {
+      get: function () {
+        return this.products
+          ? this.selected.length == this.products.length
+          : false;
+      },
+      set: function (value) {
+        var selected = [];
+
+        if (value) {
+          this.products.forEach(function (product) {
+            selected.push(product.id);
+          });
+        }
+
+        this.selected = selected;
+      },
+    },
+  },
   mounted() {
     // 목록조회 함수 호출
     this.getProducts();
   },
+
   methods: {
     async getProducts() {
       const result = await api.list();
       console.log(result);
       console.log(result.data);
       console.log("------");
-      console.log(this.images);
       if (result.status == 200) {
         this.products = result.data;
+      }
+    },
+    async deleteProducts() {
+      for (let i = this.selected.length - 1; i >= 0; i--) {
+        // console.log("length : " + this.selected.length);
+        console.log(this.selected);
+        console.log("product.id : " + this.selected[i]);
+        const result = await api.del(this.selected[i]);
+        console.log(result);
+        console.log(result.data);
+
+        // 서버에서 정상적으로 DB에 삭제를 했으면
+        if (result.status == 200) {
+          //화면에 바인딩된 배열에서 삭제
+
+          this.products.splice(i, 1);
+        }
+        // this.$router.go(0);
       }
     },
     async deleteProduct(product) {
