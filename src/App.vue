@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-app-bar app color="#2D3539" dark clipped-left>
-      <div width="3000">
-        <v-app-bar-title class="ml-5">STORE MANAGER</v-app-bar-title>
+      <div class="goHome ml-5" @click="goHome()">
+        <v-toolbar-title>STORE MANAGER</v-toolbar-title>
       </div>
 
       <v-spacer></v-spacer>
@@ -59,6 +59,9 @@
 </template>
 
 <style lang="scss">
+.goHome:hover {
+  cursor: pointer;
+}
 </style>
 
 
@@ -91,6 +94,9 @@ export default {
         // 라우터에 경로 추가
         this.$router.push(item.path);
       }
+    },
+    goHome() {
+      this.$router.push("/");
     },
   },
 };

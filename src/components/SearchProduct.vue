@@ -1,4 +1,3 @@
-
 <template>
   <v-card outlined class="mb-3 rounded-0">
     <v-row>

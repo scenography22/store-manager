@@ -21,10 +21,12 @@
                 <img
                   v-if="product.images.length > 0"
                   :src="product.images[0].dataUrl"
+                  width="100%"
                 />
                 <img
                   v-if="product.images.length == 0"
                   src="https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png"
+                  width="100%"
                 />
                 <v-file-input
                   v-model="product.images"

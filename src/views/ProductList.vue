@@ -102,9 +102,6 @@
   </div>
 </template>
 <style>
-img {
-  width: 100%;
-}
 .vrow {
   min-height: 136px;
 }
@@ -120,9 +117,6 @@ td {
 th {
   border-right: 1px solid #cccccc;
   background-color: #f8f9fd;
-}
-input {
-  margin-top: 7px;
 }
 .mtdetail:hover {
   color: #00c73c;
@@ -208,11 +202,11 @@ export default {
         // 서버에서 정상적으로 DB에 삭제를 했으면
         if (result.status == 200) {
           //화면에 바인딩된 배열에서 삭제
-
           this.products.splice(i, 1);
         }
         // this.$router.go(0);
       }
+      this.selectAll = false;
     },
     async deleteProduct(product) {
       console.log("product.id : " + product.id);
