@@ -18,7 +18,7 @@ export default {
   // GET http://localhost:8090/products                
   list: () => axios.get(`${process.env.VUE_APP_API_BASE}/products`),
   // DELETE http://localhost:8090/products/{id}
-  del: (id) => axios.delete(`${process.env.VUE_APP_API_BASE}/products/${id}`),
+  del: (id) => axios.delete(`${process.env.VUE_APP_API_BASE}/product/${id}`),
   // PUT http://localhost:8090/products/{id}
-  put: (id, code, category, name, price, quantity, shortDescription, description) => axios.put(`${process.env.VUE_APP_API_BASE}/products/${id}?code=${code}&category=${category}&name=${name}&price=${price}&quantity=${quantity}&shortDescription=${shortDescription}&description=${description}`)
+  put: (id, code, category, name, price, quantity, shortDescription, description) => axios.put(`${process.env.VUE_APP_API_BASE}/product/${id}?code=${code}&category=${category}&name=${name}&price=${price}&quantity=${quantity}&shortDescription=${shortDescription}&description=${description}`)
 }

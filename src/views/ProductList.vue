@@ -191,20 +191,28 @@ export default {
       }
     },
     async deleteProducts() {
-      for (let i = this.selected.length - 1; i >= 0; i--) {
+      for (let i in this.products) {
         // console.log("length : " + this.selected.length);
-        console.log(this.selected);
-        console.log("product.id : " + this.selected[i]);
-        const result = await api.del(this.selected[i]);
-        console.log(result);
-        console.log(result.data);
+        // console.log("---------------");
+        // console.log("product.id : " + this.selected[i]);
 
-        // 서버에서 정상적으로 DB에 삭제를 했으면
-        if (result.status == 200) {
-          //화면에 바인딩된 배열에서 삭제
+        // console.log(this.products[i].id);
+
+        // // 서버에서 정상적으로 DB에 삭제를 했으면
+        console.log(this.products[i].id);
+
+        if (this.products[i].id == this.selected[0]) {
+          console.log("원근맨2");
+          // const result = await api.del(this.selected[0]);
+          // console.log(result);
+          // console.log(result.data);
+
+          // console.log("원근맨");
+          // console.log(this.selected[0]);
+          console.log(i);
           this.products.splice(i, 1);
         }
-        // this.$router.go(0);
+        // // this.$router.go(0);
       }
       this.selectAll = false;
     },

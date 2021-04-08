@@ -6,64 +6,32 @@
       </v-card-title>
     </v-card>
     <v-card outlined class="rounded-0">
-      <v-card-title class="font-weight-black"> 주문 목록 </v-card-title>
+      <v-card-title style="font-size: 14px"> [검색 결과 0건] </v-card-title>
       <v-card outlined class="mx-3 mb-3 rounded-0 text-center">
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-center">
-                  <input type="checkbox" v-model="selectAll" />
-                </th>
+                <th class="text-center" style="font-size: 14px">주문일자</th>
+                <th class="text-center" style="font-size: 14px">주문번호</th>
+                <th class="text-center" style="font-size: 14px">주문자</th>
                 <th class="text-center" style="font-size: 14px">상품명</th>
-                <th class="text-center" style="font-size: 14px">상품코드</th>
-                <th class="text-center" style="font-size: 14px">판매가</th>
-                <th class="text-center" style="font-size: 14px">재고수량</th>
-                <th class="text-center" style="font-size: 14px">카테고리</th>
-                <th class="text-center" style="font-size: 14px">상품등록일</th>
+                <th class="text-center" style="font-size: 14px">수량</th>
+                <th class="text-center" style="font-size: 14px">결제금액</th>
                 <th class="text-center" style="font-size: 14px">최종수정일</th>
-                <th class="text-center" style="font-size: 14px">요약설명</th>
+                <th class="text-center" style="font-size: 14px">주문상태</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(product, i) in products" :key="i">
-                <td>
-                  <input
-                    type="checkbox"
-                    v-model="selected"
-                    :value="product.id"
-                  />
-                </td>
-                <v-menu tile bottom right offset-x>
-                  <template v-slot:activator="{ on }">
-                    <td>
-                      <span v-on="on" style="text-decoration: underline">{{
-                        product.name
-                      }}</span>
-                    </td>
-                  </template>
-                  <v-list>
-                    <v-list-item
-                      ><v-btn @click="deleteProducts(product)"
-                        >Remove</v-btn
-                      ></v-list-item
-                    >
-                    <v-list-item><v-btn text>Edit</v-btn></v-list-item>
-                    <v-list-item
-                      ><v-btn text>{{
-                        product.description
-                      }}</v-btn></v-list-item
-                    >
-                  </v-list>
-                </v-menu>
-
+                <td>{{ product.createdTime }}</td>
                 <td>{{ product.code }}</td>
                 <td>{{ product.price }}</td>
+                <td>{{ product.name }}</td>
                 <td>{{ product.quantity }}</td>
-                <td>{{ product.category }}</td>
-                <td>{{ product.createdTime }}</td>
+                <td>{{ product.price }}</td>
                 <td>{{ product.modifiedTime }}</td>
-                <td style="width: 300px">
+                <td style="width: 160px">
                   {{ product.category }}
                   <br />
                   <v-menu
@@ -95,9 +63,16 @@
     </v-card>
   </div>
 </template>
-<style>
+<style scoped>
 tbody tr {
   height: 80px;
+}
+td {
+  border-right: 1px solid #cccccc;
+}
+th {
+  border-right: 1px solid #cccccc;
+  background-color: #f8f9fd;
 }
 </style>
 <script>
