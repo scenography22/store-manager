@@ -6,7 +6,10 @@
       </v-card-title>
     </v-card>
     <v-card outlined class="rounded-0">
-      <v-card-title style="font-size: 14px"> [검색 결과 0건] </v-card-title>
+      <v-card-title style="font-size: 14px">
+        [검색 결과<span style="color: red">{{ orders.length }}</span
+        >건]
+      </v-card-title>
       <v-card outlined class="mx-3 mb-3 rounded-0 text-center">
         <v-simple-table>
           <template v-slot:default>
@@ -23,16 +26,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(product, i) in products" :key="i">
-                <td>{{ product.createdTime }}</td>
-                <td>{{ product.code }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.modifiedTime }}</td>
+              <tr v-for="(order, i) in orders" :key="i">
+                <td style="width: 240px">{{ order.orderDate }}</td>
+                <td>{{ order.orderNumber }}</td>
+                <td>{{ order.userName }}</td>
+                <td>{{ order.productName }}</td>
+                <td style="width: 100px">{{ order.quantity }}</td>
+                <td style="width: 160px">{{ order.price }}</td>
+                <td style="width: 240px">{{ order.modifiedTime }}</td>
                 <td style="width: 160px">
-                  {{ product.category }}
+                  {{ order.orderStatus }}
                   <br />
                   <v-menu
                     top
@@ -52,7 +55,8 @@
                         상태변경
                       </v-btn>
                     </template>
-                    <order-status> </order-status>
+                    <order-status :order="order" @put="modifyStatus">
+                    </order-status>
                   </v-menu>
                 </td>
               </tr>
@@ -77,33 +81,38 @@ th {
 </style>
 <script>
 import OrderStatus from "../components/OrderStatus.vue";
-import api from "../api/product";
+import api from "../api/order";
 export default {
   components: {
     OrderStatus,
   },
   data: () => ({
-    products: [],
+    // orderDate: "",
+    // code: "",
+    // userName: "",
+    // productName: "",
+    // quantity: "",
+    // price: "",
+    // modifiedTime: "",
+    orders: [],
     closeOnContentClick: false,
     selected: [],
   }),
   mounted() {
     // 목록조회 함수 호출
-    this.getProducts();
+    this.getOrders();
   },
   computed: {
     selectAll: {
       get: function () {
-        return this.products
-          ? this.selected.length == this.products.length
-          : false;
+        return this.orders ? this.selected.length == this.orders.length : false;
       },
       set: function (value) {
         var selected = [];
 
         if (value) {
-          this.products.forEach(function (product) {
-            selected.push(product.id);
+          this.orders.forEach(function (order) {
+            selected.push(order.id);
           });
         }
 
@@ -112,14 +121,25 @@ export default {
     },
   },
   methods: {
-    async getProducts() {
+    async getOrders() {
       const result = await api.list();
       console.log(result);
       console.log(result.data);
       console.log("------");
       if (result.status == 200) {
-        this.products = result.data;
+        this.orders = result.data;
       }
+    },
+    async modifyStatus(order) {
+      console.log("order.id : " + order.id);
+      const result = await api.put(order.id, order.orderStatus);
+      console.log(result);
+      console.log(result.data);
+
+      // if (result.status == 200) {
+      //   this.orders = result.data;
+      // this.$router.go(0);
+      //}
     },
   },
 };

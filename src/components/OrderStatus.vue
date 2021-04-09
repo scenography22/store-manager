@@ -28,6 +28,7 @@
               </td>
               <td class="pb-0">
                 <v-select
+                  v-model="order.orderStatus"
                   :items="status"
                   outlined
                   dense
@@ -56,6 +57,7 @@
           min-height="36"
           style="font-size: 14px; margin-top: 4px"
           class="pa-0 rounded-0 white--text mx-2"
+          @click="put(order)"
         >
           변경</v-btn
         >
@@ -83,14 +85,14 @@
 <script>
 export default {
   name: "order-status",
-  // props: ["product"],
+  props: ["order"],
   data: () => ({
     status: ["결제완료", "배송대기", "배송중", "배송완료"],
   }),
   methods: {
-    // put() {
-    //   this.$emit("put", this.product);
-    // },
+    put() {
+      this.$emit("put", this.order);
+    },
   },
 };
 </script>

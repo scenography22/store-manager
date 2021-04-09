@@ -144,7 +144,6 @@ export default {
     description: "",
     images: [],
     products: [],
-    product: [],
     id: "",
     rules: {
       required: (value) => !!value || "필수 항목입니다.",
@@ -191,7 +190,7 @@ export default {
       }
     },
     async deleteProducts() {
-      for (let i in this.products) {
+      for (let i = 0; this.products.length; i++) {
         // console.log("length : " + this.selected.length);
         // console.log("---------------");
         // console.log("product.id : " + this.selected[i]);
@@ -199,34 +198,39 @@ export default {
         // console.log(this.products[i].id);
 
         // // 서버에서 정상적으로 DB에 삭제를 했으면
-        console.log(this.products[i].id);
+        // console.log(this.products[i].id);
+        console.log(this.selected);
+        // if (this.products[i].id == this.selected[0]) {
+        //   console.log("원근맨2");
+        //   // const result = await api.del(this.selected[0]);
+        //   // console.log(result);
+        //   // console.log(result.data);
 
-        if (this.products[i].id == this.selected[0]) {
-          console.log("원근맨2");
-          // const result = await api.del(this.selected[0]);
-          // console.log(result);
-          // console.log(result.data);
-
-          // console.log("원근맨");
-          // console.log(this.selected[0]);
-          console.log(i);
-          this.products.splice(i, 1);
-        }
+        //   // console.log("원근맨");
+        //   // console.log(this.selected[0]);
+        //   console.log(i);
+        //   this.products.splice(i, 1);
+        //   i--;
+        //   console.log(i);
+        // }
         // // this.$router.go(0);
       }
       this.selectAll = false;
     },
     async deleteProduct(product) {
       console.log("product.id : " + product.id);
-      const result = await api.del(product.id);
-      console.log(result);
-      console.log(result.data);
+      var confirmDelete = confirm("해당 상품을 삭제하시겠습니까?");
+      if (confirmDelete) {
+        const result = await api.del(product.id);
+        console.log(result);
+        console.log(result.data);
 
-      // 서버에서 정상적으로 DB에 삭제를 했으면
-      if (result.status == 200) {
-        //화면에 바인딩된 배열에서 삭제
-        this.products.splice(product, 1);
-        this.$router.go(0);
+        // 서버에서 정상적으로 DB에 삭제를 했으면
+        if (result.status == 200) {
+          //화면에 바인딩된 배열에서 삭제
+          this.products.splice(product, 1);
+          this.$router.go(0);
+        }
       }
     },
     async modifyProduct(product) {
@@ -244,10 +248,10 @@ export default {
       console.log(result);
       console.log(result.data);
 
-      if (result.status == 200) {
-        this.products = result.data;
-        this.$router.go(0);
-      }
+      // if (result.status == 200) {
+      //   this.products = result.data;
+      //   this.$router.go(0);
+      // }
     },
     goToProductRegister() {
       this.$router.push("/productregister");

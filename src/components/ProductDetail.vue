@@ -230,7 +230,6 @@ export default {
     put() {
       this.$emit("put", this.product);
     },
-    cancel() {},
   },
 };
 </script>
