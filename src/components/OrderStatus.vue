@@ -28,7 +28,7 @@
               </td>
               <td class="pb-0">
                 <v-select
-                  v-model="order.orderStatus"
+                  v-model="order.purchaseState"
                   :items="status"
                   outlined
                   dense

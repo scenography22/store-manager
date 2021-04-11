@@ -96,7 +96,11 @@ export default {
       }
     },
     goHome() {
-      this.$router.push("/");
+      if (this.$route.path != "/") {
+        // 라우터에 경로 추가
+        this.$router.push("/");
+      }
+      //  this.$router.push("/");
     },
   },
 };

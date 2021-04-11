@@ -1,168 +1,176 @@
 <template>
   <div>
-    <v-app>
-      <v-container grid-list-md class="outer-container">
-        <v-layout row wrap justify-left>
-          <v-flex mr-4 mb-5>
-            <v-card>
-              <v-layout row fluid justify-center class="card-image">
-                <v-flex xs3 align-center class="back-up">
-                  <v-img
-                    src="https://res.cloudinary.com/cschroeder/image/upload/v1542293711/Icons/users.png"
-                    height="80px"
-                    width="80px"
-                    class="elevation-3 d-1 d-image"
-                  ></v-img>
-                </v-flex>
-                <v-flex xs3 class="back-up" ml-4>
-                  <v-card-title primary-title align-right>
-                    <div>
-                      <span class="grey--text text-xs-right">결제완료</span>
-                      <div class="headline text-xs-right">43</div>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
-
-              <v-card-text class="pt-0">
-                <div class="title font-weight-light mb-2">
-                  User Registrations
-                </div>
-                <div class="subheading font-weight-light grey--text">
-                  Last Campaign Performance
-                </div>
-                <v-divider class="my-2"></v-divider>
-                <v-icon class="mr-2" small> mdi-clock </v-icon>
-                <span class="caption grey--text font-weight-light"
-                  >last registration 26 minutes ago</span
+    <!--반응형 grid layout 컨테이너-->
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="3">
+          <v-card
+            outlined
+            tile
+            style="height: 150px; margin-top: 16px"
+            elevation="3"
+          >
+            <v-row align="center">
+              <v-col class="display-3" cols="6">
+                <v-sheet
+                  class="v-sheet--offset mx-auto text-center"
+                  style="margin-left: -50px"
+                  color="#"
+                  elevation="3"
+                  width="140"
                 >
-              </v-card-text>
-            </v-card>
-          </v-flex>
+                  <v-avatar color="#00C73C" size="140" tile>
+                    <v-icon size="64" dark
+                      >mdi-credit-card-check-outline</v-icon
+                    >
+                  </v-avatar>
+                </v-sheet>
+              </v-col>
+              <v-col cols="6" class="text-right">
+                <v-card-text style="font-size: 36px; font-weight: bold"
+                  >10</v-card-text
+                >
+                <v-card-text style="font-size: 18px; color: #00c73c"
+                  >결제완료</v-card-text
+                >
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
 
-          <v-flex mr-4 mb-5>
-            <v-card>
-              <v-layout row fluid justify-center class="card-image">
-                <v-flex xs3 align-center class="back-up">
-                  <v-img
-                    src="https://res.cloudinary.com/cschroeder/image/upload/v1542293711/Icons/users.png"
-                    height="80px"
-                    width="80px"
-                    class="elevation-3 d-1 d-image"
-                  ></v-img>
-                </v-flex>
-                <v-flex xs3 class="back-up" ml-4>
-                  <v-card-title primary-title align-right>
-                    <div>
-                      <span class="grey--text text-xs-right">Customers</span>
-                      <div class="headline text-xs-right">43</div>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
+        <v-col cols="12" md="3">
+          <v-card
+            outlined
+            tile
+            style="height: 150px; margin-top: 16px"
+            elevation="3"
+          >
+            <v-row align="center">
+              <v-col class="display-3" cols="6">
+                <v-sheet
+                  class="v-sheet--offset mx-auto text-center"
+                  style="margin-left: -50px"
+                  color="#"
+                  elevation="3"
+                  width="140"
+                >
+                  <v-avatar color="#00C73C" size="140" tile>
+                    <v-icon size="64" dark>mdi-truck</v-icon>
+                  </v-avatar>
+                </v-sheet>
+              </v-col>
+              <v-col cols="6" class="text-right">
+                <v-card-text style="font-size: 36px; font-weight: bold"
+                  >0</v-card-text
+                >
+                <v-card-text style="font-size: 18px; color: #00c73c"
+                  >배송대기</v-card-text
+                >
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
 
-              <v-divider light></v-divider>
-              <v-card-actions text-xs-center>
-                <v-spacer></v-spacer>
-                <v-btn flat small color="primary">View Customers</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
+        <v-col cols="12" md="3">
+          <v-card
+            outlined
+            tile
+            style="height: 150px; margin-top: 16px"
+            elevation="3"
+          >
+            <v-row align="center">
+              <v-col class="display-3" cols="6">
+                <v-sheet
+                  class="v-sheet--offset mx-auto text-center"
+                  style="margin-left: -50px"
+                  color="#"
+                  elevation="3"
+                  width="140"
+                >
+                  <v-avatar color="#00C73C" size="140" tile>
+                    <v-icon size="64" dark>mdi-truck-fast</v-icon>
+                  </v-avatar>
+                </v-sheet>
+              </v-col>
+              <v-col cols="6" class="text-right">
+                <v-card-text style="font-size: 36px; font-weight: bold"
+                  >2</v-card-text
+                >
+                <v-card-text style="font-size: 18px; color: #00c73c"
+                  >배송중</v-card-text
+                >
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
 
-          <v-flex mr-4 mb-5>
-            <v-card>
-              <v-layout row fluid justify-center class="card-image">
-                <v-flex xs3 align-center class="back-up">
-                  <v-img
-                    src="https://res.cloudinary.com/cschroeder/image/upload/v1542293711/Icons/users.png"
-                    height="80px"
-                    width="80px"
-                    class="elevation-3 d-1 d-image"
-                  ></v-img>
-                </v-flex>
-                <v-flex xs3 class="back-up" ml-4>
-                  <v-card-title primary-title align-right>
-                    <div>
-                      <span class="grey--text text-xs-right">Customers</span>
-                      <div class="headline text-xs-right">43</div>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
-
-              <v-divider light></v-divider>
-              <v-card-actions text-xs-center>
-                <v-spacer></v-spacer>
-                <v-btn flat small color="primary">View Customers</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-
-          <v-flex mb-5>
-            <v-card>
-              <v-layout row fluid justify-center class="card-image">
-                <v-flex xs3 align-center class="back-up">
-                  <v-img
-                    src="https://res.cloudinary.com/cschroeder/image/upload/v1542293711/Icons/users.png"
-                    height="80px"
-                    width="80px"
-                    class="elevation-3 d-1 d-image"
-                  ></v-img>
-                </v-flex>
-                <v-flex xs3 class="back-up" ml-4>
-                  <v-card-title primary-title align-right>
-                    <div>
-                      <span class="grey--text text-xs-right">Customers</span>
-                      <div class="headline text-xs-right">43</div>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
-
-              <v-divider light></v-divider>
-              <v-card-actions text-xs-center>
-                <v-spacer></v-spacer>
-                <v-btn flat small color="primary">View Customers</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-app>
+        <v-col cols="12" md="3">
+          <v-card
+            outlined
+            tile
+            style="height: 150px; margin-top: 16px"
+            elevation="3"
+          >
+            <v-row align="center">
+              <v-col class="display-3" cols="6">
+                <v-sheet
+                  class="v-sheet--offset mx-auto text-center"
+                  style="margin-left: -50px"
+                  color="#"
+                  elevation="3"
+                  width="140"
+                >
+                  <v-avatar color="#00C73C" size="140" tile>
+                    <v-icon size="64" dark>mdi-truck-check</v-icon>
+                  </v-avatar>
+                </v-sheet>
+              </v-col>
+              <v-col cols="6" class="text-right">
+                <v-card-text style="font-size: 36px; font-weight: bold"
+                  >1</v-card-text
+                >
+                <v-card-text style="font-size: 18px; color: #00c73c"
+                  >배송완료</v-card-text
+                >
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-card outlined height="500" tile elevation="3"
+            ><v-card-title
+              style="font-size: 16px; font-weight: bold; height: 60px"
+            >
+              스토어 결제금액 통계
+            </v-card-title>
+            <v-divider></v-divider>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-card outlined height="500" tile elevation="3"
+            ><v-card-title
+              style="font-size: 16px; font-weight: bold; height: 60px"
+            >
+              스토어 결제건수 통계
+            </v-card-title>
+            <v-divider></v-divider
+          ></v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
-<style>
-.back-up {
-  margin-top: -20px;
-}
-
-.outer-container {
-  margin-top: 40px;
-}
-
-.d-image .v-image__image--cover {
-  background-size: 70% 70%;
-}
-
-.d-1 {
-  background-color: #6c5ce7;
-  border-radius: 6px;
-}
-
-.order-status .ct-label {
-  fill: #fff;
-}
-
-div.flex.max-79 {
-  max-width: 79%;
+<style scoped>
+.v-sheet--offset {
+  top: -18px;
+  position: relative;
 }
 </style>
 
 <script>
 export default {
-  data: () => ({
-    labels: ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm", "9pm"],
-    value: [200, 675, 410, 390, 310, 460, 250, 240],
-  }),
+  data: () => ({}),
 };
 </script>

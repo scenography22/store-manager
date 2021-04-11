@@ -35,7 +35,7 @@
                 <td style="width: 160px">{{ order.price }}</td>
                 <td style="width: 240px">{{ order.modifiedTime }}</td>
                 <td style="width: 160px">
-                  {{ order.orderStatus }}
+                  {{ order.purchaseState }}
                   <br />
                   <v-menu
                     top
@@ -128,11 +128,14 @@ export default {
       console.log("------");
       if (result.status == 200) {
         this.orders = result.data;
+        for (let i = 0; i < this.orders.length; i++) {
+          console.log(this.orders[i].purchaseState);
+        }
       }
     },
     async modifyStatus(order) {
       console.log("order.id : " + order.id);
-      const result = await api.put(order.id, order.orderStatus);
+      const result = await api.put(order.id, order.purchaseState);
       console.log(result);
       console.log(result.data);
 

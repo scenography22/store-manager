@@ -190,32 +190,46 @@ export default {
       }
     },
     async deleteProducts() {
-      for (let i = 0; this.products.length; i++) {
-        // console.log("length : " + this.selected.length);
-        // console.log("---------------");
-        // console.log("product.id : " + this.selected[i]);
-
-        // console.log(this.products[i].id);
-
-        // // 서버에서 정상적으로 DB에 삭제를 했으면
-        // console.log(this.products[i].id);
-        console.log(this.selected);
-        // if (this.products[i].id == this.selected[0]) {
-        //   console.log("원근맨2");
-        //   // const result = await api.del(this.selected[0]);
-        //   // console.log(result);
-        //   // console.log(result.data);
-
-        //   // console.log("원근맨");
-        //   // console.log(this.selected[0]);
-        //   console.log(i);
-        //   this.products.splice(i, 1);
-        //   i--;
-        //   console.log(i);
-        // }
-        // // this.$router.go(0);
+      for (var i = this.products.length - 1; i >= 0; i--) {
+        for (var x in this.selected) {
+          console.log(
+            this.products[i].id + "---------------" + this.selected[x]
+          );
+          if (this.products[i].id == this.selected[x]) {
+            this.products.splice(i, 1);
+            // await api.del(this.selected[x]);
+            break;
+          }
+        }
       }
-      this.selectAll = false;
+      this.selected = false;
+      // location.reload();
+      // for (let i = 0; this.products.length; i++) {
+      //   // console.log("length : " + this.selected.length);
+      //   // console.log("---------------");
+      //   // console.log("product.id : " + this.selected[i]);
+
+      //   // console.log(this.products[i].id);
+
+      //   // // 서버에서 정상적으로 DB에 삭제를 했으면
+      //   // console.log(this.products[i].id);
+      //   console.log(this.selected);
+      //   // if (this.products[i].id == this.selected[0]) {
+      //   //   console.log("원근맨2");
+      //   //   // const result = await api.del(this.selected[0]);
+      //   //   // console.log(result);
+      //   //   // console.log(result.data);
+
+      //   //   // console.log("원근맨");
+      //   //   // console.log(this.selected[0]);
+      //   //   console.log(i);
+      //   //   this.products.splice(i, 1);
+      //   //   i--;
+      //   //   console.log(i);
+      //   // }
+      //   // // this.$router.go(0);
+      // }
+      // this.selectAll = false;
     },
     async deleteProduct(product) {
       console.log("product.id : " + product.id);
