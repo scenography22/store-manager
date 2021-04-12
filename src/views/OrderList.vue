@@ -7,7 +7,8 @@
     </v-card>
     <v-card outlined class="rounded-0">
       <v-card-title style="font-size: 14px">
-        [검색 결과<span style="color: red">{{ orders.length }}</span
+        [검색 결과
+        <span style="color: red; margin-left: 5px">{{ orders.length }}</span
         >건]
       </v-card-title>
       <v-card outlined class="mx-3 mb-3 rounded-0 text-center">
@@ -97,9 +98,12 @@ export default {
     orders: [],
     closeOnContentClick: false,
     selected: [],
+    countA: 0,
+    countB: 0,
+    countC: 0,
+    countD: 0,
   }),
   mounted() {
-    // 목록조회 함수 호출
     this.getOrders();
   },
   computed: {
@@ -128,8 +132,23 @@ export default {
       console.log("------");
       if (result.status == 200) {
         this.orders = result.data;
+        // let count = 0;
         for (let i = 0; i < this.orders.length; i++) {
-          console.log(this.orders[i].purchaseState);
+          // console.log(this.orders[i].purchaseState);
+          switch (this.orders[i].purchaseState) {
+            case "결제완료":
+              this.countA++;
+              break;
+            case "배송대기":
+              this.countB++;
+              break;
+            case "배송중":
+              this.countC++;
+              break;
+            case "배송완료":
+              this.countD++;
+              break;
+          }
         }
       }
     },
@@ -141,7 +160,7 @@ export default {
 
       // if (result.status == 200) {
       //   this.orders = result.data;
-      // this.$router.go(0);
+      this.$router.go(0);
       //}
     },
   },

@@ -197,13 +197,13 @@ export default {
           );
           if (this.products[i].id == this.selected[x]) {
             this.products.splice(i, 1);
-            // await api.del(this.selected[x]);
+            await api.del(this.selected[x]);
             break;
           }
         }
       }
       this.selected = false;
-      // location.reload();
+      location.reload();
       // for (let i = 0; this.products.length; i++) {
       //   // console.log("length : " + this.selected.length);
       //   // console.log("---------------");
