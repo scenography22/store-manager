@@ -178,13 +178,21 @@
             </v-card-title>
             <v-divider></v-divider>
             <div id="chart" class="pa-10">
-              <apexchart
-                type="line"
-                width="700"
-                height="350"
-                :options="chartOptions"
-                :series="series"
-              ></apexchart></div
+              <v-card class="mt-2 pa-3">
+                <div
+                  class="text-center pa-5"
+                  style="width: 100%"
+                  v-if="!chartLoading"
+                >
+                  <v-progress-circular
+                    width="8"
+                    size="180"
+                    indeterminate
+                    color="#FB9A9A"
+                  ></v-progress-circular>
+                </div>
+                <line-chart :chartData="chartData" v-if="chartLoading" />
+              </v-card></div
           ></v-card>
         </v-col>
       </v-row>
@@ -203,6 +211,7 @@
 </style>
 
 <script>
+import LineChart from "../components/LineChart.vue";
 import VueApexCharts from "vue-apexcharts";
 import axios from "axios";
 import api from "../api/order";
@@ -212,6 +221,8 @@ export default {
     countB: 0,
     countC: 0,
     countD: 0,
+    data: [],
+    chartLoading: false,
     series: [],
     chartOptions: {
       chart: {
@@ -242,6 +253,7 @@ export default {
   }),
   components: {
     apexchart: VueApexCharts,
+    LineChart,
   },
   mounted() {
     this.getOrders();
@@ -282,10 +294,19 @@ export default {
           this.$refs.chart1.updateSeries([
             {
               name: "결제금액",
-              data: response.data,
+              data: [],
             },
           ]);
-          console.log(response.data);
+
+          for (let i = 0; i < response.data.length; i++) {
+            this.$refs.chart1.updateSeries.data = [
+              response.data[i].x,
+              response.data[i].y,
+            ];
+          }
+          console.log("나는야원근맨");
+          console.log(this.$refs.chart1.updateSeries.data);
+          console.log("나는야원근맨");
           console.log(response.data[0].x);
         });
 
