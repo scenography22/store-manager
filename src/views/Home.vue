@@ -163,7 +163,7 @@
                 type="line"
                 width="700"
                 height="350"
-                :options="chartOptions"
+                :options="chartOptions1"
                 :series="series"
               ></apexchart>
             </div>
@@ -178,21 +178,14 @@
             </v-card-title>
             <v-divider></v-divider>
             <div id="chart" class="pa-10">
-              <v-card class="mt-2 pa-3">
-                <div
-                  class="text-center pa-5"
-                  style="width: 100%"
-                  v-if="!chartLoading"
-                >
-                  <v-progress-circular
-                    width="8"
-                    size="180"
-                    indeterminate
-                    color="#FB9A9A"
-                  ></v-progress-circular>
-                </div>
-                <line-chart :chartData="chartData" v-if="chartLoading" />
-              </v-card></div
+              <apexchart
+                ref="chart2"
+                type="bar"
+                width="700"
+                height="350"
+                :options="chartOptions2"
+                :series="series2"
+              ></apexchart></div
           ></v-card>
         </v-col>
       </v-row>
@@ -211,20 +204,33 @@
 </style>
 
 <script>
-import LineChart from "../components/LineChart.vue";
 import VueApexCharts from "vue-apexcharts";
 import axios from "axios";
 import api from "../api/order";
+const moment = require("moment");
+const week = [];
+
+for (let i = 0; i < 7; i++) {
+  week[6 - i] = moment().add(-i, "days").format("YYYY-MM-DD");
+}
 export default {
   data: () => ({
     countA: 0,
     countB: 0,
     countC: 0,
     countD: 0,
+    payA: 0,
+    payB: 0,
+    payC: 0,
+    payD: 0,
+    payE: 0,
+    payF: 0,
+    payG: 0,
     data: [],
     chartLoading: false,
     series: [],
-    chartOptions: {
+    series2: [],
+    chartOptions1: {
       chart: {
         height: 350,
         type: "line",
@@ -248,15 +254,47 @@ export default {
           opacity: 0.5,
         },
       },
+      // xaxis: {
+      //   categories: "week",
+      // },
+      colors: ["#00C73C"],
+    },
+    chartOptions2: {
+      chart: {
+        height: 350,
+        type: "bar",
+        zoom: {
+          enabled: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "straight",
+      },
+      title: {
+        text: "일별 결제건수",
+        align: "left",
+      },
+      grid: {
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5,
+        },
+      },
+      xaxis: {
+        categories: week,
+      },
       colors: ["#00C73C"],
     },
   }),
   components: {
     apexchart: VueApexCharts,
-    LineChart,
   },
   mounted() {
     this.getOrders();
+    this.uChart1();
     this.uChart();
   },
   methods: {
@@ -285,7 +323,7 @@ export default {
     goToOrderList() {
       this.$router.push("/orderlist");
     },
-    uChart() {
+    uChart1() {
       axios
         .get(
           "http://my-json-server.typicode.com/apexcharts/apexcharts.js/yearly"
@@ -294,23 +332,103 @@ export default {
           this.$refs.chart1.updateSeries([
             {
               name: "결제금액",
-              data: [],
+              data: response.data,
             },
           ]);
 
-          for (let i = 0; i < response.data.length; i++) {
-            this.$refs.chart1.updateSeries.data = [
-              response.data[i].x,
-              response.data[i].y,
-            ];
-          }
-          console.log("나는야원근맨");
-          console.log(this.$refs.chart1.updateSeries.data);
-          console.log("나는야원근맨");
-          console.log(response.data[0].x);
+          // for (let i = 0; i < response.data.length; i++) {
+          //   this.$refs.chart1.updateSeries.data = [
+          //     response.data[i].x,
+          //     response.data[i].y,
+          //   ];
+          // }
+          // console.log("나는야원근맨");
+          // console.log(this.$refs.chart1.updateSeries.data);
+          // console.log("나는야원근맨");
+          // console.log(response.data[0].x);
         });
 
       // console.log(this.$refs.chart1);
+    },
+    uChart() {
+      axios.get("http://localhost:8090/purchase-orders").then((response) => {
+        this.orders = response.data;
+        console.log(this.orders);
+
+        for (let i = 0; i < this.orders.length; i++) {
+          switch (this.orders[i].orderDay) {
+            case moment(new Date()).format("YYYY-MM-DD"):
+              this.payA++;
+              break;
+            case moment(new Date()).subtract(1, "days").format("YYYY-MM-DD"):
+              this.payB++;
+              break;
+            case moment(new Date()).subtract(2, "days").format("YYYY-MM-DD"):
+              this.payC++;
+              break;
+            case moment(new Date()).subtract(3, "days").format("YYYY-MM-DD"):
+              this.payD++;
+              break;
+            case moment(new Date()).subtract(4, "days").format("YYYY-MM-DD"):
+              this.payE++;
+              break;
+            case moment(new Date()).subtract(5, "days").format("YYYY-MM-DD"):
+              this.payF++;
+              break;
+            case moment(new Date()).subtract(6, "days").format("YYYY-MM-DD"):
+              this.payG++;
+              break;
+          }
+        }
+
+        this.$refs.chart2.updateSeries([
+          {
+            name: "결제건수",
+            data: [
+              this.payG,
+              this.payF,
+              this.payE,
+              this.payD,
+              this.payC,
+              this.payB,
+              this.payA,
+            ],
+          },
+        ]);
+        console.log(
+          moment(new Date()).format("YYYY-MM-DD") + " : " + this.payA
+        );
+        console.log(
+          moment(new Date()).subtract(1, "days").format("YYYY-MM-DD") +
+            " : " +
+            this.payB
+        );
+        console.log(
+          moment(new Date()).subtract(2, "days").format("YYYY-MM-DD") +
+            " : " +
+            this.payC
+        );
+        console.log(
+          moment(new Date()).subtract(3, "days").format("YYYY-MM-DD") +
+            " : " +
+            this.payD
+        );
+        console.log(
+          moment(new Date()).subtract(4, "days").format("YYYY-MM-DD") +
+            " : " +
+            this.payE
+        );
+        console.log(
+          moment(new Date()).subtract(5, "days").format("YYYY-MM-DD") +
+            " : " +
+            this.payF
+        );
+        console.log(
+          moment(new Date()).subtract(6, "days").format("YYYY-MM-DD") +
+            " : " +
+            this.payG
+        );
+      });
     },
   },
 };
