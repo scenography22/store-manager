@@ -205,7 +205,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-import axios from "axios";
+// import axios from "axios";
 import api from "../api/order";
 const moment = require("moment");
 const week = [];
@@ -226,23 +226,30 @@ export default {
     payE: 0,
     payF: 0,
     payG: 0,
+    sumA: 0,
+    sumB: 0,
+    sumC: 0,
+    sumD: 0,
+    sumE: 0,
+    sumF: 0,
+    sumG: 0,
     data: [],
     chartLoading: false,
     series: [],
     series2: [],
     chartOptions1: {
       chart: {
-        height: 350,
+        height: "auto",
         type: "line",
-        zoom: {
-          enabled: false,
-        },
+        // zoom: {
+        //   enabled: false,
+        // },
       },
       dataLabels: {
         enabled: false,
       },
       stroke: {
-        curve: "straight",
+        curve: "smooth",
       },
       title: {
         text: "일별 결제금액",
@@ -254,22 +261,39 @@ export default {
           opacity: 0.5,
         },
       },
-      // xaxis: {
-      //   categories: "week",
-      // },
+      xaxis: {
+        categories: week,
+      },
       colors: ["#00C73C"],
+      markers: {
+        size: 5,
+      },
+      animations: {
+        enabled: true,
+        easing: "easeinout",
+        speed: 50,
+      },
     },
     chartOptions2: {
       chart: {
         height: 350,
         type: "bar",
-        zoom: {
-          enabled: false,
+        animations: {
+          enabled: true,
+          easing: "linear",
+          speed: 30,
+          animateGradually: {
+            enabled: true,
+            delay: 20,
+          },
         },
+        // zoom: {
+        //   enabled: false,
+        // },
       },
-      dataLabels: {
-        enabled: false,
-      },
+      // dataLabels: {
+      //   enabled: false,
+      // },
       stroke: {
         curve: "straight",
       },
@@ -294,8 +318,7 @@ export default {
   },
   mounted() {
     this.getOrders();
-    this.uChart1();
-    this.uChart();
+    // this.updateChart();
   },
   methods: {
     async getOrders() {
@@ -318,68 +341,53 @@ export default {
               break;
           }
         }
-      }
-    },
-    goToOrderList() {
-      this.$router.push("/orderlist");
-    },
-    uChart1() {
-      axios
-        .get(
-          "http://my-json-server.typicode.com/apexcharts/apexcharts.js/yearly"
-        )
-        .then((response) => {
-          this.$refs.chart1.updateSeries([
-            {
-              name: "결제금액",
-              data: response.data,
-            },
-          ]);
-
-          // for (let i = 0; i < response.data.length; i++) {
-          //   this.$refs.chart1.updateSeries.data = [
-          //     response.data[i].x,
-          //     response.data[i].y,
-          //   ];
-          // }
-          // console.log("나는야원근맨");
-          // console.log(this.$refs.chart1.updateSeries.data);
-          // console.log("나는야원근맨");
-          // console.log(response.data[0].x);
-        });
-
-      // console.log(this.$refs.chart1);
-    },
-    uChart() {
-      axios.get("http://localhost:8090/purchase-orders").then((response) => {
-        this.orders = response.data;
-        console.log(this.orders);
 
         for (let i = 0; i < this.orders.length; i++) {
-          switch (this.orders[i].orderDay) {
+          switch (this.orders[i].orderDate.substring(0, 10)) {
             case moment(new Date()).format("YYYY-MM-DD"):
+              this.sumA += this.orders[i].price;
               this.payA++;
               break;
             case moment(new Date()).subtract(1, "days").format("YYYY-MM-DD"):
+              this.sumB += this.orders[i].price;
               this.payB++;
               break;
             case moment(new Date()).subtract(2, "days").format("YYYY-MM-DD"):
+              this.sumC += this.orders[i].price;
               this.payC++;
               break;
             case moment(new Date()).subtract(3, "days").format("YYYY-MM-DD"):
+              this.sumD += this.orders[i].price;
               this.payD++;
               break;
             case moment(new Date()).subtract(4, "days").format("YYYY-MM-DD"):
+              this.sumE += this.orders[i].price;
               this.payE++;
               break;
             case moment(new Date()).subtract(5, "days").format("YYYY-MM-DD"):
+              this.sumF += this.orders[i].price;
               this.payF++;
               break;
             case moment(new Date()).subtract(6, "days").format("YYYY-MM-DD"):
+              this.sumG += this.orders[i].price;
               this.payG++;
               break;
           }
         }
+        this.$refs.chart1.updateSeries([
+          {
+            name: "결제금액",
+            data: [
+              this.sumG,
+              this.sumF,
+              this.sumE,
+              this.sumD,
+              this.sumC,
+              this.sumB,
+              this.sumA,
+            ],
+          },
+        ]);
 
         this.$refs.chart2.updateSeries([
           {
@@ -395,40 +403,10 @@ export default {
             ],
           },
         ]);
-        console.log(
-          moment(new Date()).format("YYYY-MM-DD") + " : " + this.payA
-        );
-        console.log(
-          moment(new Date()).subtract(1, "days").format("YYYY-MM-DD") +
-            " : " +
-            this.payB
-        );
-        console.log(
-          moment(new Date()).subtract(2, "days").format("YYYY-MM-DD") +
-            " : " +
-            this.payC
-        );
-        console.log(
-          moment(new Date()).subtract(3, "days").format("YYYY-MM-DD") +
-            " : " +
-            this.payD
-        );
-        console.log(
-          moment(new Date()).subtract(4, "days").format("YYYY-MM-DD") +
-            " : " +
-            this.payE
-        );
-        console.log(
-          moment(new Date()).subtract(5, "days").format("YYYY-MM-DD") +
-            " : " +
-            this.payF
-        );
-        console.log(
-          moment(new Date()).subtract(6, "days").format("YYYY-MM-DD") +
-            " : " +
-            this.payG
-        );
-      });
+      }
+    },
+    goToOrderList() {
+      this.$router.push("/orderlist");
     },
   },
 };
