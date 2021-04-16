@@ -7,7 +7,7 @@
 
       <v-spacer></v-spacer>
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="http://yeeun-store.s3-website.ap-northeast-2.amazonaws.com/#/fresh"
         target="_blank"
         text
       >
